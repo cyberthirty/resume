@@ -3,43 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ping and Nmap Tool</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <title>Subdomain Enumeration Tool</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
 </head>
 <body>
-    <header class="bg-dark text-white text-center py-3">
-        <h1>Ping and Nmap Tool</h1>
-    </header>
-    <main class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Ping</h2>
-                <form id="pingForm">
-                    <div class="form-group">
-                        <label for="pingTarget">Target:</label>
-                        <input type="text" class="form-control" id="pingTarget" name="pingTarget" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Ping</button>
-                </form>
+    <div class="container">
+        <h1 class="text-center">Subdomain Enumeration Tool</h1>
+        <form id="enumForm">
+            <div class="form-group">
+                <label for="domain">Domain</label>
+                <input type="text" class="form-control" id="domain" placeholder="example.com" required>
             </div>
-            <div class="col-md-6">
-                <h2>Nmap</h2>
-                <form id="nmapForm">
-                    <div class="form-group">
-                        <label for="nmapTarget">Target:</label>
-                        <input type="text" class="form-control" id="nmapTarget" name="nmapTarget" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Run Nmap</button>
-                </form>
+            <div class="form-group">
+                <label for="wordlist">Wordlist</label>
+                <input type="file" class="form-control-file" id="wordlist" required>
             </div>
-        </div>
-    </main>
-    <!-- Bootstrap JS and dependencies -->
+            <button type="submit" class="btn btn-primary btn-block">Start Enumeration</button>
+        </form>
+        <div id="results" class="results"></div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#enumForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData();
+                formData.append('domain', $('#domain').val());
+                formData.append('wordlist', $('#wordlist')[0].files[0]);
+
+                $.ajax({
+                    url: '/enumerate',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#results').html(response);
+                    },
+                    error: function() {
+                        $('#results').html('<div class="alert alert-danger">An error occurred while processing your request.</div>');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
