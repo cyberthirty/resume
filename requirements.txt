@@ -1,4 +1,0 @@
-Flask
-dnspython
-pip install ghp-import
-
