@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping and Nmap Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Ping and Nmap Tool</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Ping</h2>
+            <form id="pingForm">
+                <label for="pingTarget">Target:</label>
+                <input type="text" id="pingTarget" name="pingTarget" required>
+                <button type="submit">Ping</button>
+            </form>
+            <pre id="pingResults"></pre>
+        </section>
+        <section>
+            <h2>Nmap</h2>
+            <form id="nmapForm">
+                <label for="nmapTarget">Target:</label>
+                <input type="text" id="nmapTarget" name="nmapTarget" required>
+                <button type="submit">Run Nmap</button>
+            </form>
+            <pre id="nmapResults"></pre>
+        </section>
+    </main>
+    <script src="scripts.js"></script>
+</body>
+</html>
